@@ -12,3 +12,4 @@ client_script 'client.lua'
 
 ui_page "nui/alert.html"
 files { 'nui/**/**' }
+server_scripts { '@mysql-async/lib/MySQL.lua' }
