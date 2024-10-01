@@ -1,117 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>RedAlert - Plugin</title>
+    <title>התרעות פיקוד העורף</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400&family=Secular+One&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap');
-
-        * {
-            font-family: 'Heebo', sans-serif !important;
-        }
-
         body {
-            width: 450px;
-            height: 600px;
+            font-family: Arial, sans-serif;
+            background-color: transparent; 
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-end; 
+            align-items: flex-start; 
+            height: 100vh;
+            position: absolute; 
+            top: 0;
+            right: 0;
+            
         }
-
-        .active {
-            background: red;
+        .container {
+            background-color: #00497357;
             color: white;
+            width: 235px;
+            height: 100vh; 
+            border-radius: 0px;
+            border-left: 6px solid #ff6600;
+            overflow: hidden;
+            transition: transform 0.3s ease; 
+            transform: translateX(100%); 
+            display: flex;
+            flex-direction: column; 
         }
-
-        .normal {
-            background: rgba(255, 255, 255, 0.164);
+        .header {
+            background-color: #004973;
+            height: 40px;
+            padding: 15px;
+            text-align: right;
+            display: flex;
+            align-items: center;
         }
-
-        svg {
-            fill: red;
+        .header img {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
         }
-
-        #card {
-            background: rgb(35, 38, 43);
-            background: linear-gradient(90deg, rgba(35, 38, 43, 1) 14%, rgba(36, 40, 46, 1) 39%, rgba(33, 37, 43, 1) 67%, rgba(32, 35, 40, 1) 74%);
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            text-align: right;
+            padding-right: 15px;
         }
-
-        .animation {
-            animation: fade-in 700ms ease-in;
+        .header p {
+            margin: 0;
+            font-size: 26px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            text-align: right;
+            line-height: 0.5;
+            white-space: nowrap;
+            padding-right: 15px;
         }
-
-        @keyframes fade-in {
-            0% {
-                opacity: 0;
-            }
-
-            25% {
-                opacity: 0.5;
-            }
-
-            50% {
-                opacity: 0.7;
-            }
-
-            100% {
-                opacity: 1;
-            }
+        .sub-header {
+            background-color: #001c2a;
+            height: 38px;
+            text-align: center;
+            font-size: 26px;
+            font-weight: 400;
+            margin: 0;
+            padding: 3px 0 0;
+            line-height: 35px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600; 
+        }
+        .list {
+            color: white;
+            padding: 10px;
+            flex-grow: 1; 
+            overflow: hidden; 
+        }
+        .list-item {
+            background-color: #e5e8eb; 
+            color: black;
+            width: 225px; 
+            padding: 1px;
+            margin: 3px 0;
+            text-align: center;
+            font-size: 18px;
+            font-family: 'Secular One', sans-serif;
+            border-radius: 2px;
+            transition: transform 0.5s ease; 
+            border-bottom: 5px solid #ff6600; 
         }
     </style>
-    <title>RedAlert - Fivem</title>
 </head>
-
 <body>
-    <main class="absolute top-0 right-0 m-4 w-fit h-[200px]">
-        <header class="bg-red-500 w-full py-2 rounded pl-14 pr-2 flex flex-row items-center gap-3 justify-end"
-            style="display: none;" id="header">
-            <div>
-                <h1 class="text-xl font-bold text-white text-center">RedAlert - IL</h1>
-                <span class="text-white font-[600] text-sm">התראות צבע אדום</span>
-            </div>
-            <img class="rounded"
-                src="https://cdn.discordapp.com/attachments/1160926570609901609/1162022031450181732/unknown_-_2023-10-08T105716.359.png"
-                alt="RedAlerts Image" width="40">
-        </header>
-        <div class="flex flex-col mt-0.5 gap-1.5 cards" data-name="alerts" dir="rtl" id="container"
-            style="display: none;">
+
+<div class="container" id="alertContainer">
+    <div class="header">
+        <img src="https://cdn.discordapp.com/attachments/1288471941501685811/1289916622047416411/Pakar-svg.png?ex=66fa8ff8&is=66f93e78&hm=2ca9bbea3b88ab7d815cb7709b704721b5606e2b1eda3bb31f8d779f8274f863" alt="סמל פיקוד העורף">
+        <div style="text-align: right;">
+            <h1 style="margin-top: -10px;">התרעות</h1>
+            <p style="margin-top: -5px;">פיקוד העורף</p>
         </div>
-    </main>
-    <script>
-        window.addEventListener("message", function (e) {
-            let alerts = e.data.alerts
-            if (!alerts) return;
-            if (Object.keys(alerts).length <= 0) return;
-            Object.keys(alerts).forEach(val => {
-                const alert = `<div class="text-white font-bold w-full px-3 rounded-md py-1.5 flex flex-row items-center gap-3 ${alerts[val].area}" id="card">
-                <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" viewBox="0 0 576 512">
-                    <path d="M80.3 44C69.8 69.9 64 98.2 64 128s5.8 58.1 16.3 84c6.6 16.4-1.3 35-17.7 41.7s-35-1.3-41.7-17.7C7.4 202.6 0 166.1 0 128S7.4 53.4 20.9 20C27.6 3.6 46.2-4.3 62.6 2.3S86.9 27.6 80.3 44zM555.1 20C568.6 53.4 576 89.9 576 128s-7.4 74.6-20.9 108c-6.6 16.4-25.3 24.3-41.7 17.7S489.1 228.4 495.7 212c10.5-25.9 16.3-54.2 16.3-84s-5.8-58.1-16.3-84C489.1 27.6 497 9 513.4 2.3s35 1.3 41.7 17.7zM352 128c0 23.7-12.9 44.4-32 55.4V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V183.4c-19.1-11.1-32-31.7-32-55.4c0-35.3 28.7-64 64-64s64 28.7 64 64zM170.6 76.8C163.8 92.4 160 109.7 160 128s3.8 35.6 10.6 51.2c7.1 16.2-.3 35.1-16.5 42.1s-35.1-.3-42.1-16.5c-10.3-23.6-16-49.6-16-76.8s5.7-53.2 16-76.8c7.1-16.2 25.9-23.6 42.1-16.5s23.6 25.9 16.5 42.1zM464 51.2c10.3 23.6 16 49.6 16 76.8s-5.7 53.2-16 76.8c-7.1 16.2-25.9 23.6-42.1 16.5s-23.6-25.9-16.5-42.1c6.8-15.6 10.6-32.9 10.6-51.2s-3.8-35.6-10.6-51.2c-7.1-16.2 .3-35.1 16.5-42.1s35.1 .3 42.1 16.5z" />
-                </svg>
-                <span id="place">${alerts[val].area}</span>
-            </div>
-            `
-            console.log(JSON.stringify(alerts[val]))
+    </div>
+    <div class="sub-header" id="subHeader">
+        <p style="margin-top: -2px;">ירי רקטות וטילים</p>
+    </div>
+    
+    <div style="margin-right: -10px;" class="list" id="container">
+    </div>    
+</div>
 
-            const container = document.getElementById("container")
-                const header = document.getElementById('header')
-                if (container.innerHTML.trim().length == 0) {
-                    container.style.display = ""
-                    header.style.display = ""
-                }
-                container.innerHTML += alert
-                setTimeout(() => {
-                    const container2 = document.getElementById("container")
-                    const header2 = document.getElementById('header')
-                    const card = document.getElementsByClassName(alerts[val].area)[0]
-                    card.remove()
-                    if (container2.innerHTML.trim().length == 0) {
-                        container2.style.display = "none"
-                        header2.style.display = "none"
+<script>
+    let alertSoundPlayed = false; 
+
+    window.addEventListener("message", function (e) {
+        let alerts = e.data.alerts;
+        if (!alerts) return;
+        if (Object.keys(alerts).length <= 0) return;
+
+        const container = document.getElementById("alertContainer");
+        container.style.transform = 'translateX(0)'; 
+
+        if (!alertSoundPlayed) {
+            const alertWord = new SpeechSynthesisUtterance("אזעקה");
+            alertWord.lang = 'he-IL';
+            speechSynthesis.speak(alertWord);
+            alertSoundPlayed = true; 
+        }
+
+        Object.keys(alerts).forEach((val) => {
+            const areaName = alerts[val].area; 
+            
+            const utterance = new SpeechSynthesisUtterance(areaName);
+            utterance.lang = 'he-IL'; 
+            
+            utterance.onend = () => {
+                setTimeout(() => { 
+                    const alertContainer = document.getElementById("container");
+                    const listItems = alertContainer.getElementsByClassName("list-item");
+                    if (listItems.length > 0) {
+                        listItems[0].style.transform = 'translateX(100%)';
+
+                        setTimeout(() => {
+                            listItems[0].remove(); 
+                            
+                            if (alertContainer.children.length === 0) {
+                                container.style.transform = 'translateX(100%)';
+                                alertSoundPlayed = false;
+                            }
+                        }, 500); 
                     }
-                }, 10000);
-            })
-        });
-    </script>
-</body>
+                }, 2000); 
+            };
+            speechSynthesis.speak(utterance);
 
+            const alert = `<div class="list-item">${areaName}</div>`;
+            const alertContainer = document.getElementById("container");
+            alertContainer.innerHTML += alert;
+        });
+    });
+</script>
+</body>
 </html>
